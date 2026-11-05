@@ -122,8 +122,8 @@ AI Cheap usage dashboard.
 
 ## Undo setup
 
-Fully quit the clients. Restore the `config.toml.backup-TIMESTAMP` printed during
-setup to `config.toml`. If no config existed before setup, remove the generated
+Fully quit the clients. Restore the `config.toml.backup-TIMESTAMP` from before
+your first AI Cheap setup to `config.toml`. If no config existed before setup, remove the generated
 `config.toml` instead. Then remove `aicheap-api-key` from that directory and, on
 macOS/Linux, `~/.local/bin/codex-aicheap` if present. Codex and Python are left
 installed.

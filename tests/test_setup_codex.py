@@ -2,11 +2,9 @@
 import contextlib
 import importlib.util
 import io
-import json
 import os
 from pathlib import Path
 import subprocess
-import sys
 import tempfile
 import tomllib
 import unittest
@@ -121,7 +119,7 @@ trust_level = "trusted"
         if os.name == "nt":
             env = dict(os.environ, AICHEAP_TEST_FILE=str(self.key))
             command = (
-                '$acl = Get-Acl -LiteralPath $env:AICHEAP_TEST_FILE; '
+                '$acl = [IO.File]::GetAccessControl($env:AICHEAP_TEST_FILE); '
                 '$sid = [Security.Principal.WindowsIdentity]::GetCurrent().User.Value; '
                 '$rules = @($acl.GetAccessRules($true, $true, '
                 '[Security.Principal.SecurityIdentifier])); '
