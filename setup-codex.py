@@ -19,7 +19,7 @@ import tomllib
 import warnings
 
 
-MODEL = "GPT-6.1-Sol"
+MODEL = "gpt-6.1-sol"
 BASE_URL = "https://api.aicheap.io/openai/v1"
 TOKEN_COMMAND = (
     'import os,pathlib,sys;'

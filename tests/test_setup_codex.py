@@ -5,6 +5,7 @@ import io
 import os
 from pathlib import Path
 import subprocess
+import sys
 import tempfile
 import tomllib
 import unittest
@@ -73,7 +74,7 @@ trust_level = "trusted"
         for key in ("approval_policy", "developer_instructions", "mcp_servers", "projects"):
             self.assertEqual(result[key], before[key])
         self.assertEqual(result["model_providers"]["other"], before["model_providers"]["other"])
-        self.assertEqual(result["model"], "GPT-6.1-Sol")
+        self.assertEqual(result["model"], "gpt-6.1-sol")
         self.assertEqual(result["model_provider"], "aicheap")
         self.assertNotIn("env_key", result["model_providers"]["aicheap"])
         self.assertIn("# Keep this comment", self.config.read_text())
@@ -147,6 +148,17 @@ trust_level = "trusted"
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertNotIn("example", result.stdout + result.stderr)
         self.assertEqual(tomllib.loads(self.config.read_text())["model_provider"], "aicheap")
+
+    def test_piped_installer_configures_desktop_without_saving_script(self):
+        result = subprocess.run(
+            [sys.executable, "-", "--desktop-only"],
+            input=(ROOT / "setup-codex.py").read_text(encoding="utf-8"),
+            cwd=self.home, env=self.env, capture_output=True, text=True,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertNotIn("example", result.stdout + result.stderr)
+        self.assertEqual(tomllib.loads(self.config.read_text())["model"], "gpt-6.1-sol")
+        self.assertEqual(set(self.home.iterdir()), {self.config_dir})
 
     def test_cli_install_and_failure_do_not_pass_credentials_to_npm(self):
         npm = self.home / ("npm.cmd" if os.name == "nt" else "npm")

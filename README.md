@@ -1,7 +1,7 @@
 # AI Cheap Setup
 
 Set up [AI Cheap](https://aicheap.io/) for **Codex CLI** and **local Codex in the
-ChatGPT desktop app**, with **GPT-6.1-Sol** as the default model.
+ChatGPT desktop app**, with **gpt-6.1-sol** as the default model.
 
 | Client | macOS | Windows, without WSL |
 | --- | --- | --- |
@@ -24,27 +24,25 @@ Linux CLI use is also supported.
 
 ## macOS
 
-Download and inspect the installer, then run it:
+Run the installer:
 
 ```sh
-curl -fsSLo setup-codex.py https://raw.githubusercontent.com/trungdlp/aicheap-setup/HEAD/setup-codex.py
-python3 setup-codex.py
+curl -fsSL https://raw.githubusercontent.com/trungdlp/aicheap-setup/HEAD/setup-codex.py | python3 -
 ```
 
 If you cloned the repository, `bash setup-codex.sh` also locates an installed
 Python 3.11+ automatically. For desktop use without installing the CLI:
 
 ```sh
-python3 setup-codex.py --desktop-only
+curl -fsSL https://raw.githubusercontent.com/trungdlp/aicheap-setup/HEAD/setup-codex.py | python3 - --desktop-only
 ```
 
 ## Windows (native PowerShell)
 
-Download and inspect the installer, then run it in PowerShell:
+Run the installer in PowerShell:
 
 ```powershell
-Invoke-WebRequest -Uri https://raw.githubusercontent.com/trungdlp/aicheap-setup/HEAD/setup-codex.py -OutFile setup-codex.py
-py -3 setup-codex.py
+(Invoke-WebRequest -UseBasicParsing -Uri https://raw.githubusercontent.com/trungdlp/aicheap-setup/HEAD/setup-codex.py).Content | py -3 -
 ```
 
 Use `python` instead of `py -3` if Python was installed without the `py` launcher.
@@ -55,8 +53,8 @@ is required. From a clone, you can also use the PowerShell entry point:
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\setup-codex.ps1
 ```
 
-For desktop use without installing the CLI, run `py -3 setup-codex.py --desktop-only`
-or pass `-DesktopOnly` to the PowerShell entry point.
+For desktop use without installing the CLI, add `--desktop-only` after `py -3 -`
+in the piped command, or pass `-DesktopOnly` to the PowerShell entry point.
 
 ## Start using it
 
