@@ -11,6 +11,10 @@ import shutil
 import subprocess
 import sys
 import tempfile
+
+if sys.version_info < (3, 11):
+    sys.exit("Python 3.11 or newer is required; on macOS, try bash setup-codex.sh.")
+
 import tomllib
 import warnings
 

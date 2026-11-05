@@ -125,11 +125,16 @@ trust_level = "trusted"
                 '$sid = [Security.Principal.WindowsIdentity]::GetCurrent().User.Value; '
                 '$rules = @($acl.GetAccessRules($true, $true, '
                 '[Security.Principal.SecurityIdentifier])); '
+                '@{ Protected = $acl.AreAccessRulesProtected; CurrentUser = $sid; '
+                'Rules = @($rules | ForEach-Object { '
+                '@{ User = $_.IdentityReference.Value; Inherited = $_.IsInherited; '
+                'Rights = $_.FileSystemRights.ToString() } }) } | ConvertTo-Json -Depth 4; '
                 'if (-not $acl.AreAccessRulesProtected -or $rules.Count -ne 1 '
                 '-or $rules[0].IdentityReference.Value -ne $sid) { exit 1 }'
             )
-            subprocess.run(["powershell.exe", "-NoProfile", "-Command", command],
-                           env=env, check=True, capture_output=True)
+            result = subprocess.run(["powershell.exe", "-NoProfile", "-Command", command],
+                                    env=env, capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         else:
             self.assertEqual(self.key.stat().st_mode & 0o777, 0o600)
             self.assertEqual(self.config.stat().st_mode & 0o777, 0o600)
