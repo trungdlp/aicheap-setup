@@ -79,6 +79,9 @@ def secure_write(path, data, mode=0o600):
                     ["whoami", "/user", "/fo", "csv", "/nh"], text=True
                 )
                 sid = next(csv.reader(identity.splitlines()))[1]
+                # Drop explicit default grants too, before storing any credentials.
+                subprocess.run(["icacls", temporary, "/reset"],
+                               check=True, capture_output=True)
                 subprocess.run(
                     ["icacls", temporary, "/inheritance:r", "/grant:r", f"*{sid}:F"],
                     check=True, capture_output=True,
