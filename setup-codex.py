@@ -19,7 +19,6 @@ import tomllib
 import warnings
 
 
-MODEL = "gpt-6.1-sol"
 BASE_URL = "https://api.aicheap.io/openai/v1"
 TOKEN_COMMAND = (
     'import os,pathlib,sys;'
@@ -44,7 +43,7 @@ def merge_config(original, key_file):
         if pending.lstrip().startswith("["):
             at_root = False
             skip = "aicheap" in statement.get("model_providers", {})
-        if not skip and not (at_root and {"model", "model_provider"} & statement.keys()):
+        if not skip and not (at_root and "model_provider" in statement):
             kept.append(pending)
         pending = ""
     if pending:
@@ -52,7 +51,7 @@ def merge_config(original, key_file):
 
     quote = lambda value: json.dumps(value, ensure_ascii=False)
     merged = (
-        f'model = {quote(MODEL)}\nmodel_provider = "aicheap"\n'
+        'model_provider = "aicheap"\n'
         + "".join(kept).rstrip() + "\n\n"
         '[model_providers.aicheap]\n'
         'name = "AI Cheap"\n'
@@ -141,7 +140,7 @@ def setup(desktop_only=False):
         secure_write(launcher, b'#!/usr/bin/env bash\nexec codex "$@"\n', 0o700)
         print(f"Compatibility launcher: {launcher}")
     print(f"Configured {config_file}")
-    print(f"Default provider: AI Cheap; model: {MODEL}")
+    print("Default provider: AI Cheap")
     print("Fully quit and reopen the ChatGPT desktop app, then select Codex / This computer.")
     print("For the CLI, run codex and use /status to verify the provider and model.")
 

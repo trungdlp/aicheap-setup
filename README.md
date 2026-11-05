@@ -1,7 +1,7 @@
 # AI Cheap Setup
 
 Set up [AI Cheap](https://aicheap.io/) for **Codex CLI** and **local Codex in the
-ChatGPT desktop app**, with **gpt-6.1-sol** as the default model.
+ChatGPT desktop app**.
 
 | Client | macOS | Windows, without WSL |
 | --- | --- | --- |
@@ -89,8 +89,8 @@ See OpenAI's [gateway configuration and verification instructions](https://learn
 
 ## What setup changes
 
-- Replaces the top-level `model` / `model_provider` defaults and the `aicheap`
-  provider in `config.toml`, preserving unrelated settings and login files.
+- Replaces the top-level `model_provider` default and the `aicheap` provider in
+  `config.toml`, preserving existing model choices, other settings, and login files.
 - Saves the original configuration as `config.toml.backup-TIMESTAMP` before
   changing it. Invalid or conflicting TOML is rejected before configuration writes.
 - Stores the key beside `config.toml` in `aicheap-api-key`, with owner-only
